@@ -23,7 +23,8 @@ public class App {
 
         System.out.println("************* TEST 2: seller findByDepartment *************");
 //      Suggestion to do it just by department ID
-        List<Seller> sellers = sellerDao.findByDepartment(new Department(2, null));
+        Department dep = new Department(2, null);
+        List<Seller> sellers = sellerDao.findByDepartment(dep);
         for(Seller item : sellers) {
             System.out.println(item);
         }
@@ -35,6 +36,13 @@ public class App {
         for(Seller item : allSellers) {
             System.out.println(item);
         }
+
+        System.out.println();
+
+        System.out.println("************* TEST 4: seller insert *************");
+        Seller newSeller = new Seller(null, "Lucas", "lucas@gmail.com", new Date(), 4500.00, dep);
+        sellerDao.insert(newSeller);
+        System.out.println("Inserted! new Id = " + newSeller.getId());
 
     }
 }
