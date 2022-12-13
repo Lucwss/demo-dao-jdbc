@@ -37,12 +37,12 @@ public class App {
             System.out.println(item);
         }
 
-        System.out.println();
-
-        System.out.println("************* TEST 4: seller insert *************");
-        Seller newSeller = new Seller(null, "Lucas", "lucas@gmail.com", new Date(), 4500.00, dep);
-        sellerDao.insert(newSeller);
-        System.out.println("Inserted! new Id = " + newSeller.getId());
+//        System.out.println();
+//
+//        System.out.println("************* TEST 4: seller insert *************");
+//        Seller newSeller = new Seller(null, "Lucas", "lucas@gmail.com", new Date(), 4500.00, dep);
+//        sellerDao.insert(newSeller);
+//        System.out.println("Inserted! new Id = " + newSeller.getId());
 
         System.out.println();
 
@@ -52,6 +52,17 @@ public class App {
         seller.getDepartment().setId(1);
         sellerDao.update(seller);
         System.out.println("The id " + seller.getId() + " was updated!");
+
+        System.out.println();
+
+        System.out.println("************* TEST 6: seller delete *************");
+        Integer id = 5;
+        seller = sellerDao.findById(id);
+        if(seller == null) System.out.println("The id dosen't exist");
+        else {
+            sellerDao.deleteById(id);
+            System.out.println("The id " + id + " was deleted!");
+        }
 
     }
 }

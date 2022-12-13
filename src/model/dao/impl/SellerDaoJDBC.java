@@ -90,7 +90,25 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public void deleteById(Integer id) {
+        PreparedStatement st = null;
+        try {
+            connection.setAutoCommit(false);
+            st = connection.prepareStatement("DELETE FROM seller WHERE Id = ?", Statement.RETURN_GENERATED_KEYS);
+            st.setInt(1, id);
 
+            st.executeUpdate();
+
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new DbException("Error trying to rollback!!!, caused by :" + e.getMessage());
+            }
+            throw new DbIntegrityException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+        }
     }
 
     @Override
