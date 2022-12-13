@@ -44,5 +44,14 @@ public class App {
         sellerDao.insert(newSeller);
         System.out.println("Inserted! new Id = " + newSeller.getId());
 
+        System.out.println();
+
+        System.out.println("************* TEST 5: seller update *************");
+        seller = sellerDao.findById(8);
+        seller.setName("Fausto Silva");
+        seller.getDepartment().setId(1);
+        sellerDao.update(seller);
+        System.out.println("The id " + seller.getId() + " was updated!");
+
     }
 }
