@@ -28,5 +28,13 @@ public class App {
             System.out.println(item);
         }
 
+        System.out.println();
+
+        System.out.println("************* TEST 3: seller findAll *************");
+        List<Seller> allSellers = sellerDao.findAll();
+        for(Seller item : allSellers) {
+            System.out.println(item);
+        }
+
     }
 }
