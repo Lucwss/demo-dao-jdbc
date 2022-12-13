@@ -20,6 +20,7 @@ public class SellerDaoJDBC implements SellerDao {
         this.connection = connection;
     }
 
+    // ********************************* CRUD METHODS *********************************
     @Override
     public void insert(Seller obj) {
 
@@ -44,16 +45,7 @@ public class SellerDaoJDBC implements SellerDao {
             st = connection.prepareStatement("SELECT seller.*, department.Name as DepName FROM seller INNER JOIN department ON seller.DepartmentId = department.Id WHERE seller.Id = ?");
             st.setInt(1, id);
             rs = st.executeQuery();
-            if(rs.next()) {
-            return new Seller(
-                    rs.getInt("Id"),
-                    rs.getString("Name"),
-                    rs.getString("Email"),
-                    rs.getDate("BirthDate"),
-                    rs.getDouble("BaseSalary"),
-                    new Department(rs.getInt("DepartmentId"), rs.getString("DepName"))
-                    );
-            }
+            if(rs.next()) return instantiateSeller(rs, instantiateDepartment(rs));
             return null;
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
@@ -67,5 +59,22 @@ public class SellerDaoJDBC implements SellerDao {
     @Override
     public List<Seller> findAll() {
         return null;
+    }
+
+    // ********************************* OTHER METHODS *********************************
+
+    private Department instantiateDepartment(ResultSet rs) throws SQLException {
+        return new Department(rs.getInt("DepartmentId"), rs.getString("DepName"));
+    }
+
+    private Seller instantiateSeller(ResultSet rs, Department dp) throws SQLException {
+        return new Seller(
+                rs.getInt("Id"),
+                rs.getString("Name"),
+                rs.getString("Email"),
+                rs.getDate("BirthDate"),
+                rs.getDouble("BaseSalary"),
+                dp
+        );
     }
 }
