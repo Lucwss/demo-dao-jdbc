@@ -7,31 +7,26 @@ import model.entities.Seller;
 
 import java.util.Date;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) {
 
-        Integer option = 0;
-
         SellerDao sellerDao = DaoFactory.createSellerDao();
 
+        System.out.println("************* TEST 1: seller findById *************");
+        Seller seller = sellerDao.findById(7);
+        System.out.println(seller);
 
-            try (Scanner input = new Scanner(System.in)) {
+        System.out.println();
 
-                do {
-                    System.out.print("type the seller id to check their informations: ");
-                    Integer id = input.nextInt();
-                    Seller seller = sellerDao.findById(id);
-                    System.out.println(seller);
-                    System.out.println();
-                    System.out.print("Would you like to exit ? ( 0 -> yes || any number to check another one): ");
-                    option = input.nextInt();
-                } while (option != 0);
-
-            } catch(InputMismatchException e) {
-                e.printStackTrace();
-            }
+        System.out.println("************* TEST 2: seller findByDepartment *************");
+//      Suggestion to do it just by department ID
+        List<Seller> sellers = sellerDao.findByDepartment(new Department(2, null));
+        for(Seller item : sellers) {
+            System.out.println(item);
+        }
 
     }
 }
