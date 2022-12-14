@@ -86,5 +86,15 @@ public class App {
 //        departmentDao.insert(depart);
 //        System.out.println("Inserted! new Id = " + depart.getId());
 
+//        System.out.println("************* TEST 4: department update *************");
+//        dep = departmentDao.findById(6);
+//        dep.setName("Information Technology");
+//        departmentDao.update(dep);
+//        System.out.println("The id " + dep.getId() + " was updated!");
+
+//        System.out.println("************* TEST 4: department update *************");
+//        Integer id = 3;
+//        departmentDao.deleteById(id);
+//        System.out.println("The id " + id + " was deleted!");
     }
 }

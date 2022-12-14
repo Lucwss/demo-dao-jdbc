@@ -55,12 +55,44 @@ public class DepartmentDaoJDBC implements DepartmentDao {
 
     @Override
     public void update(Department obj) {
+        PreparedStatement st = null;
 
+        try {
+            connection.setAutoCommit(false);
+            st = connection.prepareStatement("UPDATE department SET Name=? WHERE Id=?", Statement.RETURN_GENERATED_KEYS);
+            st.setString(1, obj.getName());
+            st.setInt(2, obj.getId());
+            st.executeUpdate();
+            connection.commit();
+        } catch(SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new DbException("Error trying to rollback!!!, caused by :" + e.getMessage());
+            }
+            throw new DbIntegrityException(e.getMessage());
+        }
     }
 
     @Override
     public void deleteById(Integer id) {
-
+        PreparedStatement st = null;
+        try {
+            connection.setAutoCommit(false);
+            st = connection.prepareStatement("DELETE FROM department WHERE Id=?", Statement.RETURN_GENERATED_KEYS);
+            st.setInt(1, id);
+            st.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new DbException("Error trying to rollback!!!, caused by :" + e.getMessage());
+            }
+            throw new DbIntegrityException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+        }
     }
 
     @Override
