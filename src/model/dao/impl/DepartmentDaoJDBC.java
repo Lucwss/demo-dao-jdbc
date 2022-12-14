@@ -2,6 +2,7 @@ package model.dao.impl;
 
 import db.DB;
 import db.DbException;
+import db.DbIntegrityException;
 import model.dao.DepartmentDao;
 import model.entities.Department;
 
@@ -20,7 +21,36 @@ public class DepartmentDaoJDBC implements DepartmentDao {
     // ********************************* CRUD METHODS *********************************
     @Override
     public void insert(Department obj) {
+        PreparedStatement st = null;
 
+        try {
+            connection.setAutoCommit(false);
+            st = connection.prepareStatement("INSERT INTO department (Name) VALUES (?)", Statement.RETURN_GENERATED_KEYS);
+            st.setString(1, obj.getName());
+            int rowsAffected = st.executeUpdate();
+
+            if(rowsAffected > 0) {
+                ResultSet rs = st.getGeneratedKeys();
+                if(rs.next()) {
+                    int id = rs.getInt(1);
+                    obj.setId(id);
+                }
+                DB.closeResultSet(rs);
+            }
+            else {
+                throw new DbException("Unexpected Error! No rows Affected!");
+            }
+            connection.commit();
+        } catch(SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                throw new DbException("Error trying to rollback!!!, caused by :" + e.getMessage());
+            }
+            throw new DbIntegrityException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+        }
     }
 
     @Override

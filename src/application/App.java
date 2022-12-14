@@ -67,7 +67,7 @@ public class App {
 
         DepartmentDao departmentDao = DaoFactory.createDepartmentDao();
         System.out.println("************* TEST 1: department findById *************");
-        Department dep = departmentDao.findById(2);
+        Department dep = departmentDao.findById(6);
 
         System.out.println(dep);
 
@@ -80,6 +80,11 @@ public class App {
         }
 
         System.out.println();
+
+//        System.out.println("************* TEST 3: department insert *************");
+//        Department depart = new Department(null, "T.I");
+//        departmentDao.insert(depart);
+//        System.out.println("Inserted! new Id = " + depart.getId());
 
     }
 }
